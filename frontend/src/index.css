@@ -1,0 +1,238 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Barkha.AI Design System - Water & Nature Inspired */
+
+@layer base {
+  :root {
+    /* Core Brand Colors - Ocean & Water Theme */
+    --background: 210 100% 98%;
+    --foreground: 210 24% 16%;
+
+    /* Card & Surface Colors */
+    --card: 0 0% 100%;
+    --card-foreground: 210 24% 16%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 24% 16%;
+
+    /* Primary - Ocean Blue */
+    --primary: 210 100% 45%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 210 100% 85%;
+    --primary-glow: 210 100% 60%;
+
+    /* Secondary - Fresh Water */
+    --secondary: 190 70% 88%;
+    --secondary-foreground: 210 24% 16%;
+
+    /* Muted - Soft Cloud */
+    --muted: 210 40% 95%;
+    --muted-foreground: 210 16% 46%;
+
+    /* Accent - Nature Green */
+    --accent: 150 60% 50%;
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 150 60% 85%;
+
+    /* Status Colors */
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Interactive Elements */
+    --border: 210 40% 88%;
+    --input: 210 40% 95%;
+    --ring: 210 100% 45%;
+
+    /* Water-Inspired Gradients */
+    --gradient-ocean: linear-gradient(135deg, hsl(210 100% 45%), hsl(190 85% 55%));
+    --gradient-water: linear-gradient(180deg, hsl(210 100% 98%), hsl(190 70% 88%));
+    --gradient-nature: linear-gradient(135deg, hsl(150 60% 50%), hsl(120 50% 60%));
+    --gradient-rain: linear-gradient(45deg, hsl(210 100% 85%), hsl(190 70% 75%));
+
+    /* Shadows & Effects */
+    --shadow-water: 0 10px 30px -10px hsl(210 100% 45% / 0.3);
+    --shadow-soft: 0 4px 20px -4px hsl(210 40% 20% / 0.1);
+    --shadow-glow: 0 0 40px hsl(210 100% 60% / 0.4);
+
+    /* Typography */
+    --font-heading: 'Inter', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+
+    /* Spacing & Layout */
+    --radius: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.5rem;
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .dark {
+    /* Dark Ocean Theme */
+    --background: 210 50% 6%;
+    --foreground: 210 40% 95%;
+
+    --card: 210 45% 8%;
+    --card-foreground: 210 40% 95%;
+
+    --popover: 210 45% 8%;
+    --popover-foreground: 210 40% 95%;
+
+    --primary: 210 100% 60%;
+    --primary-foreground: 210 50% 6%;
+    --primary-light: 210 100% 25%;
+    --primary-glow: 210 100% 70%;
+
+    --secondary: 210 40% 15%;
+    --secondary-foreground: 210 40% 95%;
+
+    --muted: 210 40% 12%;
+    --muted-foreground: 210 20% 65%;
+
+    --accent: 150 60% 55%;
+    --accent-foreground: 210 50% 6%;
+    --accent-light: 150 60% 25%;
+
+    --success: 142 71% 50%;
+    --warning: 38 92% 55%;
+    --destructive: 0 84% 65%;
+
+    --border: 210 40% 18%;
+    --input: 210 40% 15%;
+    --ring: 210 100% 60%;
+
+    /* Dark Gradients */
+    --gradient-ocean: linear-gradient(135deg, hsl(210 100% 25%), hsl(190 85% 35%));
+    --gradient-water: linear-gradient(180deg, hsl(210 50% 6%), hsl(210 40% 12%));
+    --gradient-nature: linear-gradient(135deg, hsl(150 60% 25%), hsl(120 50% 35%));
+    --gradient-rain: linear-gradient(45deg, hsl(210 100% 25%), hsl(190 70% 30%));
+
+    --shadow-water: 0 10px 30px -10px hsl(210 100% 25% / 0.4);
+    --shadow-soft: 0 4px 20px -4px hsl(210 40% 8% / 0.3);
+    --shadow-glow: 0 0 40px hsl(210 100% 40% / 0.3);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer utilities {
+  /* Water-themed animations */
+  @keyframes ripple {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes wave {
+    0%, 100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(1deg);
+    }
+    75% {
+      transform: rotate(-1deg);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200px 0;
+    }
+    100% {
+      background-position: calc(200px + 100%) 0;
+    }
+  }
+
+  .animate-ripple {
+    animation: ripple 0.6s linear;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-wave {
+    animation: wave 4s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--primary-light)),
+      transparent
+    );
+    background-size: 200px 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Glass morphism effects */
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-lg border border-border/50 shadow-soft;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: var(--gradient-ocean);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Interactive elements */
+  .interactive {
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-water;
+  }
+
+  .water-button {
+    @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground 
+           hover:shadow-water hover:scale-105 active:scale-95 
+           transition-all duration-300 rounded-lg;
+  }
+
+  .nature-button {
+    @apply bg-gradient-to-r from-accent to-accent-light text-accent-foreground 
+           hover:shadow-lg hover:scale-105 active:scale-95 
+           transition-all duration-300 rounded-lg;
+  }
+}
