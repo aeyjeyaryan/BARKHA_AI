@@ -17,6 +17,8 @@ import {
   AlertCircle
 } from "lucide-react";
 import { AssessmentResult as AssessmentResultType, formatCurrency, formatVolume, RECOMMENDATION_LABELS } from "@/lib/api";
+import axios from "axios";
+import { toast } from "@/components/ui/use-toast"; // Assuming Shadcn/UI toast component
 
 interface AssessmentResultProps {
   result: AssessmentResultType;
@@ -53,6 +55,36 @@ export const AssessmentResult = ({ result, onNewAssessment }: AssessmentResultPr
     }
   };
 
+  const handleDownloadReport = async () => {
+    try {
+      const response = await axios.get(`/api/generate-report/${result.assessment_id}`, {
+        responseType: 'blob', // Critical for handling binary PDF data
+      });
+
+      // Create a URL for the blob and trigger download
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `RTRWH_Assessment_${result.assessment_id}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast({
+        title: "Success",
+        description: "Report downloaded successfully",
+      });
+    } catch (error) {
+      console.error('Download failed:', error);
+      toast({
+        title: "Error",
+        description: error.response?.data?.detail || "Failed to download report. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const RecommendationIcon = getRecommendationIcon(result.recommended_option);
 
   return (
@@ -73,7 +105,7 @@ export const AssessmentResult = ({ result, onNewAssessment }: AssessmentResultPr
             <RotateCcw className="h-4 w-4 mr-2" />
             New Assessment
           </Button>
-          <Button variant="ocean">
+          <Button variant="ocean" onClick={handleDownloadReport}>
             <Download className="h-4 w-4 mr-2" />
             Download Report
           </Button>
@@ -208,7 +240,8 @@ export const AssessmentResult = ({ result, onNewAssessment }: AssessmentResultPr
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Suitability Score</span>
-                    <span className="font-medium">{result.recharge_recommendation.suitability_score}/10</span>
+                    <span className="font-medium">{result.recharge_recommendation.suitability_score}</span>
+                    
                   </div>
                 </div>
                 <Progress value={result.recharge_recommendation.suitability_score * 10} className="h-2" />
@@ -250,9 +283,7 @@ export const AssessmentResult = ({ result, onNewAssessment }: AssessmentResultPr
                   </div>
                   <div className="flex justify-between">
                     <span>Payback Period</span>
-                    <span className="font-medium">
-                      {Math.ceil(result.cost_analysis.total_cost / result.savings_analysis.annual_cost_savings)} years
-                    </span>
+                    <span className="font-medium">{result.payback_period || Math.ceil(result.cost_analysis.total_cost / result.savings_analysis.annual_cost_savings)} years</span>
                   </div>
                 </div>
               </div>

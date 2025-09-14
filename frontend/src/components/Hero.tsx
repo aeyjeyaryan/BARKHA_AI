@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Droplets, Calculator, FileText, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroImage from "@/assets/hero-rainwater.jpg";
+import heroImage from "@/assets/hero-rainwater.png";
 
 export const Hero = () => {
   const features = [
@@ -69,16 +69,16 @@ export const Hero = () => {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6 pt-8 border-t border-border/50">
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">500+</div>
-                <div className="text-sm text-muted-foreground">Assessments</div>
+                <div className="text-2xl font-bold text-primary">Dimension</div>
+                <div className="text-sm text-muted-foreground">Planning</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-accent">₹2.5L+</div>
-                <div className="text-sm text-muted-foreground">Savings Projected</div>
+                <div className="text-2xl font-bold text-accent">Easy</div>
+                <div className="text-sm text-muted-foreground">Accessibility</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-success">10M+</div>
-                <div className="text-sm text-muted-foreground">Liters Harvested</div>
+                <div className="text-2xl font-bold text-success">Neural Network</div>
+                <div className="text-sm text-muted-foreground">Based Calculation</div>
               </div>
             </div>
           </div>

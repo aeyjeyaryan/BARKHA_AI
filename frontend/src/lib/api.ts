@@ -44,6 +44,8 @@ export interface AssessmentResult {
     piping_cost: number;
     filtration_cost: number;
     labor_cost: number;
+    material_contingency: number;
+    tax: number;
     total_cost: number;
   };
   savings_analysis: {
@@ -62,6 +64,7 @@ export interface AssessmentResult {
     }>;
     total_cost: number;
   };
+  payback_period: string | null; // Added to match backend
 }
 
 export interface Assessment {
@@ -99,10 +102,17 @@ class BarkhaAPI {
       const response = await fetch(url, config);
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, detail: ${errorText}`);
       }
       
-      return await response.json();
+      // For JSON responses
+      if (response.headers.get('Content-Type')?.includes('application/json')) {
+        return await response.json();
+      }
+      
+      // For binary responses (e.g., PDF)
+      return response as any;
     } catch (error) {
       console.error('API Request failed:', error);
       throw error;
@@ -129,13 +139,24 @@ class BarkhaAPI {
 
   // Generate PDF report
   async generateReport(assessmentId: string): Promise<Blob> {
-    const response = await fetch(`${API_BASE_URL}/api/generate-report/${assessmentId}`);
-    
-    if (!response.ok) {
-      throw new Error('Failed to generate report');
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/generate-report/${assessmentId}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/pdf',
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to generate report: ${response.status} - ${errorText}`);
+      }
+
+      return await response.blob();
+    } catch (error) {
+      console.error('Generate report failed:', error);
+      throw error;
     }
-    
-    return response.blob();
   }
 
   // Upload site photos
@@ -145,16 +166,11 @@ class BarkhaAPI {
       formData.append('files', file);
     });
 
-    const response = await fetch(`${API_BASE_URL}/api/upload-photos/${assessmentId}`, {
+    return this.request<{ message: string }>(`/api/upload-photos/${assessmentId}`, {
       method: 'POST',
       body: formData,
+      headers: {}, // Remove Content-Type to let fetch set multipart/form-data boundary
     });
-
-    if (!response.ok) {
-      throw new Error('Failed to upload photos');
-    }
-
-    return response.json();
   }
 
   // Health check
