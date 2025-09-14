@@ -21,6 +21,7 @@ from typing import Optional
 
 router = APIRouter()
 calculator = RTRWHCalculator()
+logger = logger = logging.getLogger(__name__)
 
 @router.post("/assess", response_model=AssessmentResult)
 async def create_assessment(site_data: SiteDetailsInput, db: Session = Depends(get_db)):
