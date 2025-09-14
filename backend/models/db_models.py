@@ -1,4 +1,3 @@
-# app/models/db_models.py
 from sqlalchemy import Column, String, Float, DateTime, Text, Boolean, Integer, JSON
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
@@ -19,11 +18,11 @@ class Assessment(Base):
     soil_type = Column(String, nullable=False)
     annual_rainfall = Column(Float, nullable=False)
     water_demand = Column(Float, nullable=False)
-    site_photos = Column(JSON)
-    assessment_data = Column(JSON)
-    recommendations = Column(JSON)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    site_photos = Column(JSON, nullable=True)  # Optional for PDF
+    assessment_data = Column(JSON, nullable=False, default=dict)  # Default empty dict
+    recommendations = Column(JSON, nullable=False, default=dict)  # Default empty dict
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
     is_synced = Column(Boolean, default=True)
 
 class LocalConfig(Base):
@@ -31,8 +30,8 @@ class LocalConfig(Base):
     
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid_pkg.uuid4)
     region = Column(String, nullable=False)
-    rainfall_data = Column(JSON)
-    soil_data = Column(JSON)
-    cost_data = Column(JSON)
-    tariff_data = Column(JSON)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    rainfall_data = Column(JSON, nullable=False, default=dict)
+    soil_data = Column(JSON, nullable=False, default=dict)
+    cost_data = Column(JSON, nullable=False, default=dict)
+    tariff_data = Column(JSON, nullable=False, default=dict)
+    created_at = Column(DateTime, default=datetime.now)

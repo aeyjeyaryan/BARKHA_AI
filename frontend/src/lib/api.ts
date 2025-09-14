@@ -177,6 +177,170 @@ class BarkhaAPI {
   async healthCheck(): Promise<{ status: string; timestamp: string }> {
     return this.request<{ status: string; timestamp: string }>('/health');
   }
+
+  // Satellite Analysis Methods
+  async getSatelliteImage(latitude: number, longitude: number): Promise<Blob> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/satellite-image/download/${latitude}/${longitude}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'image/png',
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to fetch satellite image: ${response.status} - ${errorText}`);
+      }
+
+      return await response.blob();
+    } catch (error) {
+      console.error('Get satellite image failed:', error);
+      throw error;
+    }
+  }
+
+  async analyzeRooftop(latitude: number, longitude: number, markedImage: File): Promise<any> {
+    const formData = new FormData();
+    formData.append('marked_image', markedImage);
+
+    return this.request<any>(`/api/analyze-rooftop?latitude=${latitude}&longitude=${longitude}`, {
+      method: 'POST',
+      body: formData,
+      headers: {}, // Remove Content-Type to let fetch set multipart/form-data boundary
+    });
+  }
+
+  async quickDimensionsAnalysis(latitude: number, longitude: number, markedImage: File): Promise<any> {
+    const formData = new FormData();
+    formData.append('marked_image', markedImage);
+
+    return this.request<any>(`/api/quick-dimensions?latitude=${latitude}&longitude=${longitude}`, {
+      method: 'POST',
+      body: formData,
+      headers: {}, // Remove Content-Type to let fetch set multipart/form-data boundary
+    });
+  }
+
+  async createAssessmentWithSatellite(siteData: SiteDetailsInput, markedImage?: File): Promise<AssessmentResult> {
+    const formData = new FormData();
+    formData.append('site_data', JSON.stringify(siteData));
+    if (markedImage) {
+      formData.append('marked_image', markedImage);
+    }
+
+    return this.request<AssessmentResult>('/api/assess-with-satellite', {
+      method: 'POST',
+      body: formData,
+      headers: {}, // Remove Content-Type to let fetch set multipart/form-data boundary
+    });
+  }
+
+  async downloadTemplateImage(latitude: number, longitude: number): Promise<Blob> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/template-image/download/${latitude}/${longitude}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'image/png',
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to download template: ${response.status} - ${errorText}`);
+      }
+
+      return await response.blob();
+    } catch (error) {
+      console.error('Download template failed:', error);
+      throw error;
+    }
+  }
+
+  // Test PDF download functionality
+  async testPdfDownload(): Promise<Blob> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/test-pdf-download`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/pdf',
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to download test PDF: ${response.status} - ${errorText}`);
+      }
+
+      return await response.blob();
+    } catch (error) {
+      console.error('Test PDF download failed:', error);
+      throw error;
+    }
+  }
+
+  async downloadPdfReport(assessmentId: string): Promise<Blob> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/generate-report/${assessmentId}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/pdf',
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to download PDF report: ${response.status} - ${errorText}`);
+      }
+
+      return await response.blob();
+    } catch (error) {
+      console.error('PDF report download failed:', error);
+      throw error;
+    }
+  }
+
+  async downloadTextReport(assessmentId: string): Promise<Blob> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/generate-text-report/${assessmentId}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'text/plain',
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to download text report: ${response.status} - ${errorText}`);
+      }
+
+      return await response.blob();
+    } catch (error) {
+      console.error('Text report download failed:', error);
+      throw error;
+    }
+  }
+
+  async downloadBothReports(assessmentId: string): Promise<Blob> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/download-reports/${assessmentId}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/zip',
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to download reports: ${response.status} - ${errorText}`);
+      }
+
+      return await response.blob();
+    } catch (error) {
+      console.error('Reports download failed:', error);
+      throw error;
+    }
+  }
 }
 
 export const api = new BarkhaAPI();

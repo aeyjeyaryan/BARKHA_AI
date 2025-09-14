@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Droplets, BarChart3, Settings, FileText } from "lucide-react";
+import { Menu, X, Droplets, BarChart3, Settings, Satellite } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 export const Header = () => {
@@ -10,7 +10,7 @@ export const Header = () => {
   const navigation = [
     { name: "Dashboard", href: "/", icon: BarChart3 },
     { name: "New Assessment", href: "/assess", icon: Droplets },
-    { name: "Reports", href: "/reports", icon: FileText },
+    { name: "Satellite Analysis", href: "/satellite", icon: Satellite },
     { name: "Settings", href: "/settings", icon: Settings },
   ];
 

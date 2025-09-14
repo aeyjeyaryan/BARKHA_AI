@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Droplets, Calculator, FileText, Zap } from "lucide-react";
+import { ArrowRight, Droplets, Calculator, FileText, Zap, Satellite } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-rainwater.png";
 
@@ -9,6 +9,11 @@ export const Hero = () => {
       icon: Calculator,
       title: "Smart Assessment",
       description: "AI-powered calculations for optimal rainwater harvesting"
+    },
+    {
+      icon: Satellite,
+      title: "Satellite Analysis", 
+      description: "Automated rooftop dimension calculation using satellite imagery"
     },
     {
       icon: FileText,
@@ -60,8 +65,8 @@ export const Hero = () => {
               </Button>
               
               <Button size="xl" variant="outline" asChild>
-                <Link to="/demo">
-                  View Demo Report
+                <Link to="/satellite">
+                  Try Satellite Analysis
                 </Link>
               </Button>
             </div>
@@ -110,7 +115,7 @@ export const Hero = () => {
         </div>
 
         {/* Feature Cards */}
-        <div className="grid md:grid-cols-3 gap-6 mt-20">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-20">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
