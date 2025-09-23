@@ -2,7 +2,6 @@ fastapi
 pydantic
 uvicorn
 datetime
-math
 logging
 opencv-python
 matplotlib
